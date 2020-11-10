@@ -11,3 +11,5 @@ jobs:
       - matlab/install
       - matlab/run-tests:
           source-folder: main
+      - matlab/run-command:
+          command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);

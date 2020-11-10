@@ -3,7 +3,10 @@ pipeline {
   stages {
     stage('Run MATLAB Tests') {
       steps {
-        runMATLABCommand 'addpath("main"); results = runtests("IncludeSubfolders", true); assertSuccess(results);'
+        runMATLABTests(
+          sourceFolder: main
+        )
+        runMATLABCommand addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
       }
     }
   }
