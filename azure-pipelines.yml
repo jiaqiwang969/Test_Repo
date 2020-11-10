@@ -5,6 +5,8 @@ steps:
   - task: RunMATLABTests@0
     inputs:
       sourceFolder: main
-  - task: RunMATLABCommand@0
-    inputs:
-      command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
+
+  # As an alternative to RunMATLABTests, you can use RunMATLABCommand to execute a MATLAB script, function, or statement.
+  # - task: RunMATLABCommand@0
+  #   inputs:
+  #     command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);

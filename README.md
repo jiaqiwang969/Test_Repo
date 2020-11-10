@@ -20,9 +20,11 @@ steps:
   - task: RunMATLABTests@0
     inputs:
       sourceFolder: main
-  - task: RunMATLABCommand@0
-    inputs:
-      command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
+
+  # As an alternative to RunMATLABTests, you can use RunMATLABCommand to execute a MATLAB script, function, or statement.
+  # - task: RunMATLABCommand@0
+  #   inputs:
+  #     command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
 ```
 
 ### CircleCI
@@ -40,21 +42,25 @@ jobs:
       - matlab/install
       - matlab/run-tests:
           source-folder: main
-      - matlab/run-command:
-          command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
+
+      # As an alternative to run-tests, you can use run-command to execute a MATLAB script, function, or statement.
+      # - matlab/run-command:
+      #     command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
 ```
 
 ### Jenkins
-```yml
+```groovy
 pipeline {
   agent any
   stages {
     stage('Run MATLAB Tests') {
       steps {
         runMATLABTests(
-          sourceFolder: main
+          sourceFolder: 'main'
         )
-        runMATLABCommand addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
+
+        // As an alternative to runMATLABTests, you can use runMATLABCommand to execute a MATLAB script, function, or statement.
+        // runMATLABCommand "addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
       }
     }
   }
