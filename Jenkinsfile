@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('') {
+    stage('error') {
       steps {
-        runMATLABTests()
+        runMATLABCommand 'addpath("main"); results = runtests("IncludeSubfolders", true); assertSuccess(results);'
       }
     }
 
