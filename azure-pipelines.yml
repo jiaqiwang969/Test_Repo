@@ -7,6 +7,16 @@ steps:
       sourceFolder: main
       codeCoverageCobertura: code-coverage/coverage.xml
       testResultsJUnit: test-results/results.xml
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'test-results/results.xml'
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: 'code-coverage/coverage.xml'
+      pathToSources: 'main/'
+      reportDirectory: 'code-coverage'
 
   # As an alternative to RunMATLABTests, you can use RunMATLABCommand to execute a MATLAB script, function, or statement.
   # - task: RunMATLABCommand@0
