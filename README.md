@@ -1,8 +1,27 @@
-[![Build Status](https://dev.azure.com/sifounak/MATLAB_Test/_apis/build/status/sifounak.Test_Repo?branchName=main)](https://dev.azure.com/sifounak/MATLAB_Test/_build/latest?definitionId=1&branchName=main)
+
 
 # MATLAB CI Examples
 
-This repository shows how to run MATLAB tests with a variety of continuous integration systems. The repository includes these files.
+This repository shows how to run MATLAB tests with a variety of continuous integration systems. 
+
+## Badges
+
+### Jenkins
+TBD
+
+### Azure DevOps
+[![Azure DevOps Build Status](https://dev.azure.com/sifounak/MATLAB_Test/_apis/build/status/sifounak.Test_Repo?branchName=main)](https://dev.azure.com/sifounak/MATLAB_Test/_build/latest?definitionId=1&branchName=main)
+[![Azure DevOps Coverage (branch)](https://img.shields.io/azure-devops/coverage/sifounak/MATLAB_Test/1/main)]
+
+### CircleCI
+TBD
+
+### Travis CI
+TBD
+
+
+## About the MATLAB code
+The repository includes these files:
 
 | **File Path**            | **Description**                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,6 +31,8 @@ This repository shows how to run MATLAB tests with a variety of continuous integ
 | `.circleci/config.yml`   | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab).                                                       |
 | `Jenkinsfile`            | The `Jenkinsfile` file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/).                                                                            |
 | `.travis.yml`            | The `.travis.yml` file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/).                                                           |
+
+## CI configuration files
 
 ### Azure DevOps
 ```yml
