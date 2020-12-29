@@ -16,7 +16,6 @@ steps:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: 'code-coverage/coverage.xml'
       pathToSources: 'main/'
-      reportDirectory: 'code-coverage'
 
   # As an alternative to RunMATLABTests, you can use RunMATLABCommand to execute a MATLAB script, function, or statement.
   # - task: RunMATLABCommand@0
