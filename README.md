@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/sifounak/MATLAB_Test/_apis/build/status/sifounak.Test_Repo?branchName=main)](https://dev.azure.com/sifounak/MATLAB_Test/_build/latest?definitionId=1&branchName=main)
+
 # MATLAB CI Examples
 
 This repository shows how to run MATLAB tests with a variety of continuous integration systems. The repository includes these files.
