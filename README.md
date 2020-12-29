@@ -11,7 +11,7 @@ TBD
 
 ### Azure DevOps
 [![Azure DevOps Build Status](https://dev.azure.com/sifounak/MATLAB_Test/_apis/build/status/sifounak.Test_Repo?branchName=main)](https://dev.azure.com/sifounak/MATLAB_Test/_build/latest?definitionId=1&branchName=main)
-[![Azure DevOps Coverage (branch)](https://img.shields.io/azure-devops/coverage/sifounak/MATLAB_Test/1/main)]
+![Azure DevOps Coverage](https://img.shields.io/azure-devops/coverage/sifounak/MATLAB_Test/1/main)
 
 ### CircleCI
 TBD
