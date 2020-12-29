@@ -5,11 +5,11 @@ steps:
   - task: RunMATLABTests@0
     inputs:
       sourceFolder: main
-  - task: PublishCodeCoverageResults@0
+  - task: PublishCodeCoverageResults
     inputs:
       codeCoverageTool: Cobertura
       summaryFileLocation: code-coverage/coverage.xml
-  - task: PublishTestResults@0
+  - task: PublishTestResults
     condition: succeededOrFailed()
     inputs:
       testResultsFiles: test-results/results.xml
