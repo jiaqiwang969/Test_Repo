@@ -14,10 +14,10 @@ TBD
 ![Azure DevOps Coverage](https://img.shields.io/azure-devops/coverage/sifounak/MATLAB_Test/1/main)
 
 ### CircleCI
-TBD
+[![CircleCI Build Badge](https://circleci.com/gh/sifounak/Test_Repo.svg?style=shield)](https://app.circleci.com/pipelines/github/sifounak/Test_Repo)
 
 ### Travis CI
-[![Travis CI Build Status](https://travis-ci.com/sifounak/Test_Repo.svg?branch=main)](https://travis-ci.com/sifounak/Test_Repo)
+[![Travis CI Build Status](https://travis-ci.com/sifounak/Test_Repo.svg?style=svg?branch=main)](https://travis-ci.com/sifounak/Test_Repo)
 
 
 ## About the MATLAB code
