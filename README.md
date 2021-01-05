@@ -17,7 +17,7 @@ TBD
 TBD
 
 ### Travis CI
-TBD
+[![Travis CI Build Status](https://travis-ci.com/sifounak/Test_Repo.svg?branch=main)](https://travis-ci.com/sifounak/Test_Repo)
 
 
 ## About the MATLAB code
