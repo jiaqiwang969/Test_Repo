@@ -23,7 +23,7 @@ TBD
 [Travis CI documentation for setting up badges](https://docs.travis-ci.com/user/status-images/ "Travis CI documentation for setting up badges")
 
 ### GitHub A
-![MATLAB](https://github.com/acampbel/Test_Repo/workflows/MATLAB/badge.svg)
+[![MATLAB](https://github.com/acampbel/Test_Repo/workflows/MATLAB/badge.svg)](https://github.com/acampbel/Test_Repo/actions?query=workflow%3AMATLAB)
 [GitHub Actions documentation for setting up badges](https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge)
 
 ## About the code
