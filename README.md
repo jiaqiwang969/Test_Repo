@@ -22,18 +22,22 @@ TBD
 [![Travis CI Build Status](https://travis-ci.com/sifounak/Test_Repo.svg?style=svg?branch=main)](https://travis-ci.com/sifounak/Test_Repo)
 [Travis CI documentation for setting up badges](https://docs.travis-ci.com/user/status-images/ "Travis CI documentation for setting up badges")
 
+### GitHub A
+[![MATLAB](https://github.com/acampbel/Test_Repo/workflows/MATLAB/badge.svg)](https://github.com/acampbel/Test_Repo/actions?query=workflow%3AMATLAB)
+[GitHub Actions documentation for setting up badges](https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge)
 
-## About the MATLAB code
+## About the code
 The repository includes these files:
 
-| **File Path**            | **Description**                                                                                                                                                                    |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `main/sierpinski.m`      | The `sierpinski` function returns a matrix representing an image of a Sierpinski carpet fractal.                                                                                   |
-| `test/TestCarpet.m`      | The `TestCarpet` class tests the `sierpinski` function.                                                                                                                            |
-| `azure-pipelines.yml`    | The `azure-pipelines.yml` file defines the pipeline that runs on [Azure DevOps](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension).      |
-| `.circleci/config.yml`   | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab).                                                       |
-| `Jenkinsfile`            | The `Jenkinsfile` file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/).                                                                            |
-| `.travis.yml`            | The `.travis.yml` file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/).                                                           |
+| **File Path**              | **Description**                                                                                                                                                                    |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `main/sierpinski.m`        | The `sierpinski` function returns a matrix representing an image of a Sierpinski carpet fractal.                                                                                   |
+| `test/TestCarpet.m`        | The `TestCarpet` class tests the `sierpinski` function.                                                                                                                            |
+| `azure-pipelines.yml`      | The `azure-pipelines.yml` file defines the pipeline that runs on [Azure DevOps](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension).      |
+| `.circleci/config.yml`     | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab).                                                       |
+| `Jenkinsfile`              | The `Jenkinsfile` file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/).                                                                            |
+| `.travis.yml`              | The `.travis.yml` file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/).
+| `.github/workflows/ci.yml` | The `ci.yml` file defines the pipeline that runs on [GitHub Actions](https://github.com/matlab-actions/overview).
 
 ## CI configuration files
 
@@ -99,8 +103,55 @@ language: matlab
 script: matlab -batch "addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
 ```
 
+### GitHub Actions
+```yml
+# This is a basic workflow to help you get started with MATLAB Actions
+
+name: MATLAB
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      # Sets up MATLAB on the GitHub Actions runner
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v0
+
+      # Runs a set of commands using the runners shell
+      - name: Run all tests
+        uses: matlab-actions/run-tests@v0
+        with:
+          source-folder: main
+
+      # As an alternative to run-tests, you can use run-command to execute a MATLAB script, function, or statement.
+      #- name: Run all tests
+      #  uses: matlab-actions/run-command@v0
+      #  with:
+      #    command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
+```
+
+
+
 ## Caveats
-* Currently, MATLAB builds on CircleCI and Travis CI are available only for public projects. MATLAB builds on Azure DevOps that use Microsoft-hosted agents are also available only for public projects.
+* Currently, MATLAB builds on Travis CI are available only for public projects. MATLAB builds on Azure DevOps, CircleCI, and GitHub Actions that use CI service-hosted agents are also available only for public projects. However, these integrations can be used in private porjecrts that leverage self-hosted runners/agents.
 
 ## Links
 - [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
