@@ -6,9 +6,6 @@ This repository shows how to run MATLAB tests with a variety of continuous integ
 
 ## Badges
 
-### Jenkins
-TBD
-
 ### Azure DevOps
 [![Azure DevOps Build Status](https://dev.azure.com/sifounak/MATLAB_Test/_apis/build/status/sifounak.Test_Repo?branchName=main)](https://dev.azure.com/sifounak/MATLAB_Test/_build/latest?definitionId=1&branchName=main)
 ![Azure DevOps Coverage](https://img.shields.io/azure-devops/coverage/sifounak/MATLAB_Test/1/main)
@@ -18,13 +15,16 @@ TBD
 [![CircleCI Build Badge](https://circleci.com/gh/sifounak/Test_Repo.svg?style=shield)](https://app.circleci.com/pipelines/github/sifounak/Test_Repo)
 [CircleCI documentation for setting up badges](https://circleci.com/docs/2.0/status-badges/#generating-a-status-badge "CircleCI documentation for setting up badges")
 
+### GitHub Actions
+[![MATLAB](https://github.com/acampbel/Test_Repo/workflows/MATLAB/badge.svg)](https://github.com/acampbel/Test_Repo/actions?query=workflow%3AMATLAB)
+[GitHub Actions documentation for setting up badges](https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge)
+
+### Jenkins
+TBD
+
 ### Travis CI
 [![Travis CI Build Status](https://travis-ci.com/sifounak/Test_Repo.svg?style=svg?branch=main)](https://travis-ci.com/sifounak/Test_Repo)
 [Travis CI documentation for setting up badges](https://docs.travis-ci.com/user/status-images/ "Travis CI documentation for setting up badges")
-
-### GitHub A
-[![MATLAB](https://github.com/acampbel/Test_Repo/workflows/MATLAB/badge.svg)](https://github.com/acampbel/Test_Repo/actions?query=workflow%3AMATLAB)
-[GitHub Actions documentation for setting up badges](https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge)
 
 ## About the code
 The repository includes these files:
@@ -34,10 +34,10 @@ The repository includes these files:
 | `main/sierpinski.m`        | The `sierpinski` function returns a matrix representing an image of a Sierpinski carpet fractal.                                                                                   |
 | `test/TestCarpet.m`        | The `TestCarpet` class tests the `sierpinski` function.                                                                                                                            |
 | `azure-pipelines.yml`      | The `azure-pipelines.yml` file defines the pipeline that runs on [Azure DevOps](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension).      |
-| `.circleci/config.yml`     | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab).                                                       |
+| `.circleci/config.yml`     | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab).
+| `.github/workflows/ci.yml` | The `ci.yml` file defines the pipeline that runs on [GitHub Actions](https://github.com/matlab-actions/overview).                                                       |
 | `Jenkinsfile`              | The `Jenkinsfile` file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/).                                                                            |
 | `.travis.yml`              | The `.travis.yml` file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/).
-| `.github/workflows/ci.yml` | The `ci.yml` file defines the pipeline that runs on [GitHub Actions](https://github.com/matlab-actions/overview).
 
 ## CI configuration files
 
@@ -151,7 +151,8 @@ jobs:
 
 
 ## Caveats
-* Currently, MATLAB builds on Travis CI are available only for public projects. MATLAB builds on Azure DevOps, CircleCI, and GitHub Actions that use CI service-hosted agents are also available only for public projects. However, these integrations can be used in private porjecrts that leverage self-hosted runners/agents.
+* MATLAB builds on Travis CI are available only for public projects.
+* MATLAB builds on Azure DevOps, CircleCI, and GitHub Actions that use CI service-hosted agents are also available only for public projects. However, these integrations can also be used in private projects that leverage self-hosted runners/agents.
 
 ## Links
 - [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
