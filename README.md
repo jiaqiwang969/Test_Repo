@@ -6,39 +6,48 @@ This repository shows how to run MATLAB tests with a variety of continuous integ
 
 ## Badges
 
-### Azure DevOps
-[![Azure DevOps Build Status](https://dev.azure.com/sifounak/MATLAB_Test/_apis/build/status/sifounak.Test_Repo?branchName=main)](https://dev.azure.com/sifounak/MATLAB_Test/_build/latest?definitionId=1&branchName=main)
-![Azure DevOps Coverage](https://img.shields.io/azure-devops/coverage/sifounak/MATLAB_Test/1/main)
-[Blog with helpful information for setting up Azure DevOps badges](https://gregorsuttie.com/2019/03/20/azure-devops-add-your-build-status-badges-to-your-wiki/)
-
-### CircleCI
-[![CircleCI Build Badge](https://circleci.com/gh/sifounak/Test_Repo.svg?style=shield)](https://app.circleci.com/pipelines/github/sifounak/Test_Repo)
-[CircleCI documentation for setting up badges](https://circleci.com/docs/2.0/status-badges/#generating-a-status-badge "CircleCI documentation for setting up badges")
-
-### GitHub Actions
-[![MATLAB](https://github.com/acampbel/Test_Repo/workflows/MATLAB/badge.svg)](https://github.com/acampbel/Test_Repo/actions?query=workflow%3AMATLAB)
-[GitHub Actions documentation for setting up badges](https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge)
-
-### Jenkins
-TBD
-
-### Travis CI
-[![Travis CI Build Status](https://travis-ci.com/sifounak/Test_Repo.svg?style=svg?branch=main)](https://travis-ci.com/sifounak/Test_Repo)
-[Travis CI documentation for setting up badges](https://docs.travis-ci.com/user/status-images/ "Travis CI documentation for setting up badges")
+| **CI Platform** | **Badges** | **Badge Help** |
+|:----------------|:-----------|:---------------|
+| Azure DevOps | [![Azure DevOps Build Status](https://dev.azure.com/sifounak/MATLAB_Test/_apis/build/status/sifounak.Test_Repo?branchName=main)](https://dev.azure.com/sifounak/MATLAB_Test/_build/latest?definitionId=1&branchName=main) ![Azure DevOps Coverage](https://img.shields.io/azure-devops/coverage/sifounak/MATLAB_Test/1/main) | [Blog with helpful information for setting up Azure DevOps badges](https://gregorsuttie.com/2019/03/20/azure-devops-add-your-build-status-badges-to-your-wiki/) |
+| CircleCI | [![CircleCI Build Badge](https://circleci.com/gh/sifounak/Test_Repo.svg?style=shield)](https://app.circleci.com/pipelines/github/sifounak/Test_Repo) | [CircleCI documentation for setting up badges](https://circleci.com/docs/2.0/status-badges/#generating-a-status-badge "CircleCI documentation for setting up badges") |
+| GitHub Actions | [![MATLAB](https://github.com/acampbel/Test_Repo/workflows/MATLAB/badge.svg)](https://github.com/acampbel/Test_Repo/actions?query=workflow%3AMATLAB) | [GitHub Actions documentation for setting up badges](https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge) |
+| Jenkins | TBD | TBD |
+| Travis CI | [![Travis CI Build Status](https://travis-ci.com/sifounak/Test_Repo.svg?style=svg?branch=main)](https://travis-ci.com/sifounak/Test_Repo) | [Travis CI documentation for setting up badges](https://docs.travis-ci.com/user/status-images/ "Travis CI documentation for setting up badges") |
 
 ## About the code
+The primary goal of this repository is to provide a set of configuration files as templates that illustrate how to run MATLAB on various CI platforms (e.g., Azure DevOps, CircleCI, GitHub Actions, Jenkins, Travis CI).
+
+Each of these pipeline definitions does four things:
+
+1. Install the latest MATLAB release on a Linux®-based build agent
+2. Run all MATLAB tests in the root of your repository, including its subfolders
+3. Produce a test results report (if necessary)
+4. Produce a code coverage report in Cobertura XML format for the source folder
+   * Currently, only Azure DevOps supports code coverage directly
+   * To see an example of using [Codecov](https://about.codecov.io/) to show coverage results, please refer to [https://github.com/mathworks/matlab-codecov-example](https://github.com/mathworks/matlab-codecov-example)
+
+The example MATLAB code example `dayofyear.m` is a simple function takes a date string `"mm/dd/yyyy"` and returns the day-of-year number.
+
+Notes on `dayofyear.m`:
+* MATLAB already includes a day-of-year calculation using `day(d,"dayofyear")`, where `d` is a datetime object.
+* This code is only used as an example since it is a concept that is familiar to most people.
+
+There are 2 test classes provided:
+1. TestExamples.m - A simple set of equality and negative tests
+2. ParameterizedTestExamples.m - A set of 12 equality tests set up using the parameterized test format
+
 The repository includes these files:
 
-| **File Path**              | **Description**                                                                                       |
-|------------------------------------|-----------------------------------------------------------------------------------------------|
-| `main/dayofyear.m`                 | The `dayofyear` function returns the day-of-year number for a given date string "mm/dd/yyyy" |
-| `test/TestExamples.m`              | The `TestCarpet` class tests the `sierpinski` function                                       |
-| `test/ParameterizedTestExamples.m` | The `TestCarpet` class tests the `sierpinski` function                                       |
-| `azure-pipelines.yml`              | The `azure-pipelines.yml` file defines the pipeline that runs on [Azure DevOps](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension). |
-| `.circleci/config.yml`             | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab)  |
-| `.github/workflows/ci.yml`         | The `ci.yml` file defines the pipeline that runs on [GitHub Actions](https://github.com/matlab-actions/overview)             |
-| `Jenkinsfile`                      | The `Jenkinsfile` file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/)                       |
-| `.travis.yml`                      | The `.travis.yml` file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/)      |
+| **File Path**              | **Description** |
+|----------------------------|-----------------|
+| [`main/dayofyear.m`](main/dayofyear.m) | The [`dayofyear`](main/dayofyear.m) function returns the day-of-year number for a given date string "mm/dd/yyyy" |
+| [`test/TestExamples.m`](test/TestExamples.m) | The [`TestExamples`](test/TestExamples.m) class provides a few equality and negative tests for the [`dayofyear`](main/dayofyear.m) function |
+| [`test/ParameterizedTestExample.m`](test/ParameterizedTestExample.m) | The [`ParameterizedTestExample`](test/ParameterizedTestExample.m) class provides 12 tests for the [`dayofyear`](main/dayofyear.m) function using the parameterized test format |
+| [`azure-pipelines.yml`](azure-pipelines.yml) | The [`azure-pipelines.yml`](azure-pipelines.yml) file defines the pipeline that runs on [Azure DevOps](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension). |
+| [`.circleci/config.yml`](.circleci/config.yml) | The [`config.yml`](.circleci/config.yml) file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab) |
+| [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | The [`ci.yml`](.github/workflows/ci.yml) file defines the pipeline that runs on [GitHub Actions](https://github.com/matlab-actions/overview) |
+| [`Jenkinsfile`](Jenkinsfile) | The [`Jenkinsfile`](Jenkinsfile) file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/) |
+| [`.travis.yml`](.travis.yml) | The [`.travis.yml`](.travis.yml) file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/) |
 
 ## CI configuration files
 
@@ -77,31 +86,6 @@ jobs:
       # As an alternative to run-tests, you can use run-command to execute a MATLAB script, function, or statement.
       # - matlab/run-command:
       #     command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
-```
-
-### Jenkins
-```groovy
-pipeline {
-  agent any
-  stages {
-    stage('Run MATLAB Tests') {
-      steps {
-        runMATLABTests(
-          sourceFolder: 'main'
-        )
-
-        // As an alternative to runMATLABTests, you can use runMATLABCommand to execute a MATLAB script, function, or statement.
-        // runMATLABCommand "addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
-      }
-    }
-  }
-}
-```
-
-### Travis CI
-```yml
-language: matlab
-script: matlab -batch "addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
 ```
 
 ### GitHub Actions
@@ -147,6 +131,31 @@ jobs:
       #  uses: matlab-actions/run-command@v0
       #  with:
       #    command: addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
+```
+
+### Jenkins
+```groovy
+pipeline {
+  agent any
+  stages {
+    stage('Run MATLAB Tests') {
+      steps {
+        runMATLABTests(
+          sourceFolder: 'main'
+        )
+
+        // As an alternative to runMATLABTests, you can use runMATLABCommand to execute a MATLAB script, function, or statement.
+        // runMATLABCommand "addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
+      }
+    }
+  }
+}
+```
+
+### Travis CI
+```yml
+language: matlab
+script: matlab -batch "addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
 ```
 
 
