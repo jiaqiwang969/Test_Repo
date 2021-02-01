@@ -29,15 +29,16 @@ TBD
 ## About the code
 The repository includes these files:
 
-| **File Path**              | **Description**                                                                                                                                                                    |
-|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `main/sierpinski.m`        | The `sierpinski` function returns a matrix representing an image of a Sierpinski carpet fractal.                                                                                   |
-| `test/TestCarpet.m`        | The `TestCarpet` class tests the `sierpinski` function.                                                                                                                            |
-| `azure-pipelines.yml`      | The `azure-pipelines.yml` file defines the pipeline that runs on [Azure DevOps](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension).      |
-| `.circleci/config.yml`     | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab).
-| `.github/workflows/ci.yml` | The `ci.yml` file defines the pipeline that runs on [GitHub Actions](https://github.com/matlab-actions/overview).                                                       |
-| `Jenkinsfile`              | The `Jenkinsfile` file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/).                                                                            |
-| `.travis.yml`              | The `.travis.yml` file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/).
+| **File Path**              | **Description**                                                                                       |
+|------------------------------------|-----------------------------------------------------------------------------------------------|
+| `main/dayofyear.m`                 | The `dayofyear` function returns the day-of-year number for a given date string "mm/dd/yyyy" |
+| `test/TestExamples.m`              | The `TestCarpet` class tests the `sierpinski` function                                       |
+| `test/ParameterizedTestExamples.m` | The `TestCarpet` class tests the `sierpinski` function                                       |
+| `azure-pipelines.yml`              | The `azure-pipelines.yml` file defines the pipeline that runs on [Azure DevOps](https://marketplace.visualstudio.com/items?itemName=MathWorks.matlab-azure-devops-extension). |
+| `.circleci/config.yml`             | The `config.yml` file defines the pipeline that runs on [CircleCI](https://circleci.com/orbs/registry/orb/mathworks/matlab)  |
+| `.github/workflows/ci.yml`         | The `ci.yml` file defines the pipeline that runs on [GitHub Actions](https://github.com/matlab-actions/overview)             |
+| `Jenkinsfile`                      | The `Jenkinsfile` file defines the pipeline that runs on [Jenkins](https://plugins.jenkins.io/matlab/)                       |
+| `.travis.yml`                      | The `.travis.yml` file defines the pipeline that runs on [Travis CI](https://docs.travis-ci.com/user/languages/matlab/)      |
 
 ## CI configuration files
 
