@@ -1,2 +1,2 @@
 language: matlab
-script: matlab -batch "addpath('main'); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
+script: matlab -batch "addpath(genpath('src')); results = runtests('IncludeSubfolders', true); assertSuccess(results);"
