@@ -97,15 +97,15 @@ set(axes1,'FontSize',14)
 % 创建 ylabel
 ylabel({'Amplitude/log2'},'FontSize',14);
 % 创建 xlabel
-xlabel({'DMD frequency, imag(\lambda_k)','FontSize',14});
+xlabel({'DMD frequency, imag(\lambda_k)/ Hz','FontSize',14});
 % 取消以下行的注释以保留坐标区的 X 范围
- xlim(axes1,[0 100]);
+ xlim(axes1,[-1 100]);
 % 取消以下行的注释以保留坐标区的 Y 范围
  ylim(axes1,[32 44]);
 box(axes1,'on');
 hold(axes1,'off');
 for i=1:length(list)
-    text(X1(i)-0.6,Y1(i)+0.7,num2str(i),'FontSize',14);
+    text(X1(i)-0.6,Y1(i)+0.9,num2str(i),'FontSize',14);
 end
 
 

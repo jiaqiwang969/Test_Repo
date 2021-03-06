@@ -16,7 +16,7 @@ output='叶顶流场动画结果输出';
 addpath(genpath('/Users/wjq/Documents/Github-CI/Test_Repo/src'));  
 % 导入data路径，
 %通过gui导入! [fname,location]=uigetfile({'*.mat';'*.*'},'mat参数文件读取','MultiSelect','on');%MultiSelect单选
-fname = {'Compressor2Stall-12000-94.mat'};
+fname = {'Compressor2Stall-12000-48.mat'};
 location = '/Users/wjq/Documents/Github-CI/Test_Repo/data/实验8-2018-01-20/Compressor2Stall-12000';
 load([location,'/','参数说明','/','parameter.mat']); %选择文件导入数据
 disp(Note);
@@ -116,9 +116,9 @@ axes2 = axes('Parent',fig2,...
 hold(axes2,'on');
 plot(the_freq,freq_dB(:,object(1)),'-k')
 xlim(axes2,[15 12000]);
-ylim(axes2,[120,180]);
+ylim(axes2,[105,175]);
 xlabel({'Norm. Frequency (f/f_r_o_t)'},'FontSize',14);
-ylabel('Spectrum/20*log10(L/2e-5)' ,'FontSize',14);
+ylabel('Spectrum 20*log10(L/2e-5)' ,'FontSize',14);
 box(axes2,'on');
 set(axes2,'XGrid','on');   
 set(axes2,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
