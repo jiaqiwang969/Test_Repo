@@ -1,7 +1,10 @@
 # 结果文件
 *.mat
 *.plt
+*.fig
+*.eps
 # 数据文件
 data/
 # 论文撰写
 doc/
+

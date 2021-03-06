@@ -8,7 +8,7 @@
 
 clc
 clear
-close all
+%close all
 %% 案例研究内容： 
 output='叶顶流场动画结果输出';
 %% io接口
@@ -16,7 +16,7 @@ output='叶顶流场动画结果输出';
 addpath(genpath('/Users/wjq/Documents/Github-CI/Test_Repo/src'));  
 % 导入data路径，
 %通过gui导入! [fname,location]=uigetfile({'*.mat';'*.*'},'mat参数文件读取','MultiSelect','on');%MultiSelect单选
-fname = {'Compressor2Stall-12000-94.mat'};
+fname = {'Compressor2Stall-12000-48.mat'};
 location = '/Users/wjq/Documents/Github-CI/Test_Repo/data/实验8-2018-01-20/Compressor2Stall-12000';
 load([location,'/','参数说明','/','parameter.mat']); %选择文件导入数据
 disp(Note);
