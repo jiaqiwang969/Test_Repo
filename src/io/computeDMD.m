@@ -30,7 +30,48 @@ Phi =real(X2*V*inv(S)*W);
 EIGS=diag(eigs);
 
 
+%% figure3-b DMD 相对坐标系，模态
+% 时间间隔
+dT=1/(mean(12000)/60);
+% 物理频率
+f=imag(log(EIGS)/dT)/2/pi;
+% 剔出频率为0的，除了第一个意以外
+list=[1;find(f>0 & f<97)];
+Si=diag(S);
+X1 = f(list);
+Y1 = log2(Si(list)/2e-5);
 
+% 创建 figure
+figure1 = figure;
+axes1 = axes('Parent',figure1);
+hold(axes1,'on');
+
+% 创建 stem
+stem1 = stem(X1,Y1,'MarkerFaceColor',[0 0 0],'Color',[0 0 0]);
+baseline1 = get(stem1,'BaseLine');
+set(baseline1,'Visible','on');
+
+% 创建 ylabel
+ylabel({'Amplitude/log2'});
+
+% 创建 xlabel
+xlabel({'DMD frequency, imag(\lambda_k)'});
+
+% 取消以下行的注释以保留坐标区的 X 范围
+ xlim(axes1,[0 100]);
+% 取消以下行的注释以保留坐标区的 Y 范围
+ ylim(axes1,[32 44]);
+box(axes1,'on');
+hold(axes1,'off');
+saveas(figure1,[save_directory,'/','fig3-b2,DMD frequcy','.fig'])
+
+
+
+
+
+
+
+%%
 tsignal2.Nvar= tsignal.Nvar;
 tsignal2.varnames= tsignal.varnames;
 for kk=1:r
@@ -55,23 +96,27 @@ mat2tecplot(tsignal2,[save_directory,'/',name,'.plt']);
 % %     plotCylinder(reshape(imag(Phi(:,i)),min(len),10),min(len),10);
 % end
 % 
-%%  Plot DMD spectrum
-% figure3 a）Complex eigenvalues λ_k scattered in the unit circle   
+%% figure3 a） Plot DMD spectrum
+% Complex eigenvalues λ_k scattered in the unit circle   
 %    (truncated at 30th mode in the case)
-h=figure
+h=figure 
 theta = (0:1:100)*2*pi/100;
 plot(cos(theta),sin(theta),'k--') % plot unit circle
 hold on, grid on
 real_eigs=real(diag(eigs));
 imag_eigs=imag(diag(eigs));
 scatter(real_eigs,imag_eigs,'ok')
-for i=1:length(eigs)
-text(real_eigs(i),imag_eigs(i),num2str(i))
-end
+% for i=1:length(eigs)
+% text(real_eigs(i),imag_eigs(i),num2str(i))
+% end
 axis([-1.1 1.1 -1.1 1.1]);
 axis equal
 saveas(h,[save_directory,'/',name,'.png'])
 
+
+
+%% figure-3b The raw data and top 3 normalized dynamic modes
+% 备注：输出结果，再tecplot做cutoff，输出eps格式！
 
 tsignal3.Nvar= tsignal.Nvar;
 tsignal3.varnames= tsignal.varnames;
@@ -111,7 +156,8 @@ tsignal3.surfaces.v=reshape(tsignal3_v,1,min(len)+1+(min(len)+2)*n,10);
 tsignal3.surfaces.solutiontime=1;
 mat2tecplot(tsignal3,[save_directory,'/',name,'-union.plt']);
 
-% 备注：输出结果，再tecplot做cutoff，输出eps格式！
+
+
 
 
 
