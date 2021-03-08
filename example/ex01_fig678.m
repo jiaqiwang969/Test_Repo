@@ -55,7 +55,7 @@ Data=V2Pa_Universal(Data,kulite_transform_ab);
 %数据不需要取均值! Data(:,1:end-1)=Data(:,1:end-1);%-mean(Data(:,1:end-1));
 [rpm,tsignal,xuhao]=pltPlot_dB_universal(Data,fs,object,objectName,testTime,char(fname(i_file)),save_directory,DPLA,DPLA_Scale,'.mat');
 %[tsignal2,EIGS,S]=computeDMD(rpm,tsignal,xuhao,save_directory,char(fname(i_file)),rotorspeed);
-%[the_freq,freq_dB]=freqPlot_dB_universal(rotorspeed,EIGS,tsignal2,fs,Data,object)
+%[the_freq,freq_dB]=frequencyDomainPlot_dB(Data,fs,2.56);
 
 end
 
