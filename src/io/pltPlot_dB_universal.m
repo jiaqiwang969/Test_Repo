@@ -6,7 +6,7 @@
 
 
 
-function [rpm,tsignal,xuhao,Rotor_Speed]=pltPlot_dB_universal(signal,fs,object,objectName,testTime,fname,save_directory,if_RI,type,DPLA_Scale)
+function [rpm,tsignal,xuhao,Rotor_Speed]=pltPlot_dB_universal(signal,fs,object,objectName,testTime,fname,save_directory,if_RI,DPLA_Scale,type)
 
 [Pulse,Rotor_Speed] = keyRotation_RealTime(signal(1:end,end),fs); %通过键向信号获取转速信息.去头去尾      
 H_if_RI=1:(length(Rotor_Speed)-1);
