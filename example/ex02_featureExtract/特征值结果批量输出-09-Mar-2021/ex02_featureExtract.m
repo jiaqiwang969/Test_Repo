@@ -16,7 +16,7 @@ close all
 output='特征值结果批量输出';
 %% 参数配置
 rotorspeed=12000;
-number=1:57;
+number=57;
 samplePoint=600;
 
 %% io接口
@@ -24,7 +24,7 @@ samplePoint=600;
 addpath(genpath('/Users/wjq/Documents/Github-CI/Test_Repo/src'));  
 % 导入data路径，
 %通过gui导入![fname,location]=uigetfile({'*.mat';'*.*'},'mat参数文件读取','MultiSelect','on');%MultiSelect单选
-for k=number
+for k=1:number
 fname{k} = ['Compressor2Stall-12000-',num2str(k),'-12000.mat'];
 end
 location = '/Users/wjq/Documents/Github-CI/Test_Repo/data/试验18-2019-11-12-憋压/12000/';
@@ -62,18 +62,32 @@ Data=V2Pa_Universal(Data,kulite_transform_ab);
 % 读取数据，0，1，2，3。。。
 % 首先读取data0，然后对其进行600个点切分，多余出来的拼接到下一个数据data2里面，直到最后一组
 % 切分完以后立刻计算特征，features_diff_extract
+%% III.研究相比B1和R1，声传感器信号的敏感程度
+% 由于信号反复错杂，可以通过HMM框架，自己和自己的过去对比，这样有个标杆，去训练一个特定的指标。
+% 用到HMM模型，测点为：B，R1，R-6, 声学测点1个
+
+
 tic
-disp([char(fname(i_file)),...])
 [features,leftData]=features_diff_extract(Data,Object,samplePoint,leftData,features);%11个时域特征  %feature=[PV,PPV,AP,RP,RMS,SF,IF,CF,CLF,SK,KU];
+disp([char(fname(i_file)),' ... OK!'])
 toc
 
-%save(fullfile(opath,'feature_round_4_P.mat'),'feature_round')
 
 
 end
 
 
+save(fullfile(save_directory,'feature_600_12000.mat'),'features')
 
 
 
+% 
+figure
+for kk=1:29
+    for k=1:length(features)
+        feature_1(k)=features{k}(kk,1);
+    end
+    plot(normalize(smooth(feature_1,100)))
+    hold on
+end
 

@@ -76,15 +76,15 @@ set(axes1,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
 axes2 = axes('Parent',fig2,...
     'Position',[0.13 0.11  0.775 0.37865]);
 hold(axes2,'on');
-plot(Data(:,object(1)),'-k')
-%xlim(axes2,[15 12000]);
+plot(the_freq,freq_dB(:,11),'-k')
+xlim(axes2,[15 12000]);
 %ylim(axes2,[120,180]);
-xlabel({'Time series'},'FontSize',14);
-ylabel('Amplitudes' ,'FontSize',14);
+xlabel({'Norm. Frequency (f/f_r_o_t)'},'FontSize',14);
+ylabel('Spectrum/20*log10(L/2e-5)' ,'FontSize',14);
 box(axes2,'on');
-% set(axes2,'XGrid','on');   
-% set(axes2,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
-%     'XTickLabel',{'1','29(1xBPF)','58(2xBPF)'});
+set(axes2,'XGrid','on');   
+set(axes2,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
+    'XTickLabel',{'1','29(1xBPF)','58(2xBPF)'});
 
 saveas(fig2,[save_directory,'/','pro2-frequcy',fname{i_file},'.fig'])
 saveas(fig2,[save_directory,'/','pro2-frequcy',fname{i_file},'.png'])

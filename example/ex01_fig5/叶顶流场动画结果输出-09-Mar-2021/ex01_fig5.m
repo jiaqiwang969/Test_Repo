@@ -15,15 +15,15 @@ output='叶顶流场动画结果输出';
 DPLA=0; 
 DPLA_Scale= 0; 
 
+%% io接口
 % DMD 模态数
 n_mode =30;
-%% io接口
 % 导入函数路径
 addpath(genpath('/Users/wjq/Documents/Github-CI/Test_Repo/src'));  
 % 导入data路径，
-%通过gui导入! [fname,location]=uigetfile({'*.mat';'*.*'},'mat参数文件读取','MultiSelect','on');%MultiSelect单选
 rotorspeed=12000;
-fname = {'Compressor2Stall-12000-94.mat'};
+%通过gui导入! [fname,location]=uigetfile({'*.mat';'*.*'},'mat参数文件读取','MultiSelect','on');%MultiSelect单选
+fname = {'Compressor2Stall-12000-48.mat'};
 location = '/Users/wjq/Documents/Github-CI/Test_Repo/data/实验8-2018-01-20/Compressor2Stall-12000';
 load([location,'/','参数说明','/','parameter.mat']); %选择文件导入数据
 disp(Note);
@@ -85,6 +85,8 @@ ylim([-1 1]);
 axis off
 saveas(fig1,[save_directory,'/','fig3-a-unitCicle','.fig'])
 
+
+
 %% figure3-b-1 DMD 相对坐标系，模态
 
 Si=diag(S);
@@ -125,7 +127,7 @@ axes3 = axes('Parent',fig3);
 hold(axes3,'on');
 plot(the_freq,freq_dB(:,object(1)),'-k')
 xlim(axes3,[15 12000]);
-ylim(axes3,[120,180]);
+ylim(axes3,[105,175]);
 xlabel({'Norm. Frequency (f/f_r_o_t)'},'FontSize',14);
 ylabel('Spectrum/20*log10(L/2e-5)' ,'FontSize',14);
 box(axes3,'on');
@@ -134,7 +136,6 @@ set(axes3,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
     'XTickLabel',{'1','29(1xBPF)','58(2xBPF)'});
 
 
-saveas(fig2,[save_directory,'/','fig3-b2,DMD frequcy','.fig'])
 
 
 
@@ -180,11 +181,7 @@ tsignal3.surfaces.v=reshape(tsignal3_v,1,len+1+(len+2)*n,10);
 tsignal3.surfaces.solutiontime=1;
 mat2tecplot(tsignal3,[save_directory,'/','union.plt']);
 
-tsignal3.surfaces.x
-tsignal3.surfaces.z
-
-
-%% 
+%%
 %# some random data
 K = 3;
 N = len;
@@ -194,16 +191,20 @@ data = zeros(K,N);
 % data(3,:) = 0.2*randn(1,N) + 3;
 center = [0 0];                        %# center (shift)
 
-data(1,:)=normalize(sum(reshape(Phi(:,n_mode(1)),len,10),2));
-data(2,:)=normalize(sum(reshape(Phi(:,n_mode(2)),len,10),2));
-data(3,:)=normalize(sum(reshape(Phi(:,n_mode(3)),len,10),2));
+M1=reshape(Phi(:,n_mode(1)),len,10);
+M2=reshape(Phi(:,n_mode(2)),len,10);
+M3=reshape(Phi(:,n_mode(3)),len,10);
+
+data(1,:)=normalize(M1(:,9));
+data(2,:)=normalize(M2(:,10));
+data(3,:)=normalize(M3(:,10));
 radius = [data data(:,1)];             %# added first to last to create closed loop
 min(radius(1,:))
 
 
-radius(1,:) = (radius(1,:)-min(radius(1,:)))/(max(radius(1,:))-min(radius(1,:)));
-radius(2,:) = (radius(2,:)-min(radius(2,:)))/(max(radius(2,:))-min(radius(2,:)));
-radius(3,:) = (radius(3,:)-min(radius(3,:)))/(max(radius(3,:))-min(radius(3,:)));
+radius(1,:) = smooth((radius(1,:)-min(radius(1,:)))/(max(radius(1,:))-min(radius(1,:))),10);
+radius(2,:) = smooth((radius(2,:)-min(radius(2,:)))/(max(radius(2,:))-min(radius(2,:))),50);
+radius(3,:) = smooth((radius(3,:)-min(radius(3,:)))/(max(radius(3,:))-min(radius(3,:))),55);
 
 figure, hold on
 
@@ -215,16 +216,7 @@ y = r*sin(theta)+center(2);
 plot(x, y, 'k:');
 
 
-%# draw mid-circles
-theta = linspace(5*pi/2, pi/2, 500)';  %# 'angles
-num = 5;                               %# number of circles
-rr = linspace(0,2,num+2);              %# radiuses
-for k=1:num
-    r = rr(k+1);
-    x = r*cos(theta)+center(1);
-    y = r*sin(theta)+center(2);
-    plot(x, y, 'k:');
-end
+
 
 %# draw labels
 theta = linspace(5*pi/2, pi/2, N+1)';    %# 'angles
@@ -241,12 +233,15 @@ theta = linspace(5*pi/2, pi/2, N+1);
 x = bsxfun(@times, radius, cos(theta)+center(1))';
 y = bsxfun(@times, radius, sin(theta)+center(2))';
 h = zeros(1,K);
-clr = hsv(K);
-for k=1:K
-    h(k) = plot(x(:,k), y(:,k), '.-', 'Color', clr(k,:), 'LineWidth', 2);
-end
+clr = parula(K);
+% 
+     h(1) = plot(x(:,1), y(:,1), '.-', 'Color', clr(1,:), 'LineWidth', 2);
+     h(2) = plot(x(:,2), y(:,2), '.-', 'Color', clr(2,:), 'LineWidth', 2);
+     h(3) = plot(x(:,3), y(:,3), '.-', 'Color', clr(3,:), 'LineWidth', 2);
+
+
 
 %# legend and fix axes
-%legend(h, {'M1' 'M2' 'M3'}, 'location', 'SouthOutside', 'orientation','horizontal')
+legend(h, {'M1' 'M2' 'M3'}, 'location', 'SouthOutside', 'orientation','horizontal')
 hold off
 axis equal, axis([-1 1 -1 1] * r), axis off
