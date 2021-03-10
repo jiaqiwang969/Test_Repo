@@ -68,14 +68,18 @@ list=[1;find(f>0 & f<97)];
 
 fig1=figure 
 theta = (0:1:100)*2*pi/100;
-plot(cos(theta),sin(theta),'k--') % plot unit circle
+plot(cos(theta),sin(theta),'k-.') % plot unit circle
+hold on
+
+plot(0.6*cos(theta),0.6*sin(theta),'k--') % plot unit circle
+
 hold on, grid on
 real_eigs=real(EIGS);
 imag_eigs=imag(EIGS);
 scatter(real_eigs,imag_eigs,'ok')
 
-for i=1:length(list)
-text(real_eigs(list(i))-0.02,imag_eigs(list(i))+0.07,num2str(i),'FontSize',14)
+for i=1:3
+text(real_eigs(list(i))-0.02,imag_eigs(list(i))+0.07,num2str(i),'FontSize',18,'Color',[1 0 0])
 end
 axis([-1 1 -1 1]);
 axis equal
@@ -84,8 +88,6 @@ xlim([-1 1]);
 ylim([-1 1]);
 axis off
 saveas(fig1,[save_directory,'/','fig3-a-unitCicle','.fig'])
-
-
 
 %% figure3-b-1 DMD 相对坐标系，模态
 
@@ -100,23 +102,28 @@ axes1 = axes('Parent',fig2);
 hold(axes1,'on');
 
 % 创建 stem
-stem1 = stem(X1,Y1,'MarkerFaceColor',[0 0 0],'Color',[0 0 0]);
+stem1 = stem(Y1,'MarkerFaceColor',[0 0 0],'Color',[0 0 0]);
 baseline1 = get(stem1,'BaseLine');
 set(baseline1,'Visible','on');
 set(axes1,'FontSize',14)
 % 创建 ylabel
 ylabel({'Amplitude/log2'},'FontSize',14);
 % 创建 xlabel
-xlabel({'DMD frequency, imag(\lambda_k)/ Hz','FontSize',14});
+%xlabel({'DMD frequency, imag(\lambda_k)/ Hz','FontSize',14});
+%xlabel({'SVD eigenvalue','FontSize',14});
 % 取消以下行的注释以保留坐标区的 X 范围
- xlim(axes1,[-1 100]);
+ %xlim(axes1,[-1 100]);
 % 取消以下行的注释以保留坐标区的 Y 范围
- ylim(axes1,[32 44]);
+ylim(axes1,[32 44]);
 box(axes1,'on');
 hold(axes1,'off');
-for i=1:length(list)
-    text(X1(i)-0.6,Y1(i)+0.4,num2str(i),'FontSize',14);
-end
+ for i=1:3
+     text(i,Y1(i)+0.4,num2str(i),'FontSize',18,'Color',[1 0 0]);
+ end
+
+
+
+
 
 
 %% figure-3b-2 The frequency plot
@@ -136,6 +143,7 @@ set(axes3,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
     'XTickLabel',{'1','29(1xBPF)','58(2xBPF)'});
 
 
+saveas(fig2,[save_directory,'/','fig3-b2,DMD frequcy','.fig'])
 
 
 
@@ -181,6 +189,10 @@ tsignal3.surfaces.v=reshape(tsignal3_v,1,len+1+(len+2)*n,10);
 tsignal3.surfaces.solutiontime=1;
 mat2tecplot(tsignal3,[save_directory,'/','union.plt']);
 
+tsignal3.surfaces.x
+tsignal3.surfaces.z
+
+
 %%
 %# some random data
 K = 3;
@@ -206,14 +218,19 @@ radius(1,:) = smooth((radius(1,:)-min(radius(1,:)))/(max(radius(1,:))-min(radius
 radius(2,:) = smooth((radius(2,:)-min(radius(2,:)))/(max(radius(2,:))-min(radius(2,:))),50);
 radius(3,:) = smooth((radius(3,:)-min(radius(3,:)))/(max(radius(3,:))-min(radius(3,:))),55);
 
-figure, hold on
+% 创建 figure
+figure1 = figure('InvertHardcopy','off','Color',[1 1 1]);
 
-%# draw outer circle
+% 创建 axes
+axes1 = axes('Parent',figure1);
+axis off
+hold(axes1,'on');
+
 theta = linspace(5*pi/2, pi/2, 500)';  %# 'angles
 r = max(radius(:));                    %# radius
-x = r*cos(theta)+center(1);
-y = r*sin(theta)+center(2);
-plot(x, y, 'k:');
+x1 = r*cos(theta)+center(1);
+y1 = r*sin(theta)+center(2);
+
 
 
 
@@ -235,14 +252,29 @@ y = bsxfun(@times, radius, sin(theta)+center(2))';
 h = zeros(1,K);
 clr = parula(K);
 % 
+hold on
+h(1) = plot(x(:,1), y(:,1),'DisplayName','m1:29','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[0 0 0]);
+h(2) = plot(x(:,2), y(:,2),'DisplayName','m2:12','Marker','.','LineWidth',3,...
+    'Color',[0 0.447058823529412 0.741176470588235]);
+h(3) = plot(x(:,3), y(:,3),'DisplayName','m3:11','Marker','.','LineWidth',3,...
+    'LineStyle','--',...
+    'Color',[0 1 0]);
+plot(x1, y1, 'k:');
+hold on
+axis off
+hold(axes1,'off');
+% 设置其余坐标区属性
+set(axes1,'DataAspectRatio',[1 1 1],'PlotBoxAspectRatio',...
+    [1 1 1.08929892089437]);
+% 创建 legend
+legend1 = legend(axes1,'show');
+set(legend1,...
+    'Position',[0.449620775729646 0.371518547658106 0.151785714285714 0.129761904761905],...
+    'FontSize',14,...
+    'FontName','Helvetica Neue',...
+    'EdgeColor',[1 1 1],...
+    'Color',[0.941176470588235 0.941176470588235 0.941176470588235]);
 
-h(1) = plot(x(:,1), y(:,1), '.-', 'Color', clr(1,:), 'LineWidth', 2);
-h(2) = plot(x(:,2), y(:,2), '.-', 'Color', clr(2,:), 'LineWidth', 2);
-h(3) = plot(x(:,3), y(:,3), '.-', 'Color', clr(3,:), 'LineWidth', 2);
 
 
-
-%# legend and fix axes
-legend(h, {'M1' 'M2' 'M3'}, 'location', 'SouthOutside', 'orientation','horizontal')
-hold off
-axis equal, axis([-1 1 -1 1] * r), axis off

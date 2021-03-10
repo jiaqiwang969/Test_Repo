@@ -2,7 +2,7 @@
 %！ 需要代码：io接口:
 %！          - 指定数据源位置，以及结果存储相应参数，默认存储为01-xxx-result
 %！          - 数据导入以及转换V2Pa_Universal
-%！           ps接口: pltPlot_dB_universal
+%！            ps接口: pltPlot_dB_universal
 %% -------   Jiaqiwang969@gmail.com  SJTU SVN             ------- %%
 % 绘制论文里面的figure3
 
@@ -15,15 +15,15 @@ output='叶顶流场动画结果输出';
 DPLA=0; 
 DPLA_Scale= 0; 
 
+%% io接口
 % DMD 模态数
 n_mode =30;
-%% io接口
 % 导入函数路径
 addpath(genpath('/Users/wjq/Documents/Github-CI/Test_Repo/src'));  
 % 导入data路径，
-%通过gui导入! [fname,location]=uigetfile({'*.mat';'*.*'},'mat参数文件读取','MultiSelect','on');%MultiSelect单选
 rotorspeed=12000;
-fname = {'Compressor2Stall-12000-94.mat'};
+%通过gui导入! [fname,location]=uigetfile({'*.mat';'*.*'},'mat参数文件读取','MultiSelect','on');%MultiSelect单选
+fname = {'Compressor2Stall-12000-48.mat'};
 location = '/Users/wjq/Documents/Github-CI/Test_Repo/data/实验8-2018-01-20/Compressor2Stall-12000';
 load([location,'/','参数说明','/','parameter.mat']); %选择文件导入数据
 disp(Note);
@@ -68,14 +68,18 @@ list=[1;find(f>0 & f<97)];
 
 fig1=figure 
 theta = (0:1:100)*2*pi/100;
-plot(cos(theta),sin(theta),'k--') % plot unit circle
+plot(cos(theta),sin(theta),'k-.') % plot unit circle
+hold on
+
+plot(0.6*cos(theta),0.6*sin(theta),'k--') % plot unit circle
+
 hold on, grid on
 real_eigs=real(EIGS);
 imag_eigs=imag(EIGS);
 scatter(real_eigs,imag_eigs,'ok')
 
-for i=1:length(list)
-text(real_eigs(list(i))-0.02,imag_eigs(list(i))+0.07,num2str(i),'FontSize',14)
+for i=1:3
+text(real_eigs(list(i))-0.02,imag_eigs(list(i))+0.07,num2str(i),'FontSize',18,'Color',[1 0 0])
 end
 axis([-1 1 -1 1]);
 axis equal
@@ -98,23 +102,28 @@ axes1 = axes('Parent',fig2);
 hold(axes1,'on');
 
 % 创建 stem
-stem1 = stem(X1,Y1,'MarkerFaceColor',[0 0 0],'Color',[0 0 0]);
+stem1 = stem(Y1,'MarkerFaceColor',[0 0 0],'Color',[0 0 0]);
 baseline1 = get(stem1,'BaseLine');
 set(baseline1,'Visible','on');
 set(axes1,'FontSize',14)
 % 创建 ylabel
 ylabel({'Amplitude/log2'},'FontSize',14);
 % 创建 xlabel
-xlabel({'DMD frequency, imag(\lambda_k)/ Hz','FontSize',14});
+%xlabel({'DMD frequency, imag(\lambda_k)/ Hz','FontSize',14});
+%xlabel({'SVD eigenvalue','FontSize',14});
 % 取消以下行的注释以保留坐标区的 X 范围
- xlim(axes1,[-1 100]);
+ %xlim(axes1,[-1 100]);
 % 取消以下行的注释以保留坐标区的 Y 范围
- ylim(axes1,[32 44]);
+ylim(axes1,[32 44]);
 box(axes1,'on');
 hold(axes1,'off');
-for i=1:length(list)
-    text(X1(i)-0.6,Y1(i)+0.4,num2str(i),'FontSize',14);
-end
+ for i=1:3
+     text(i,Y1(i)+0.4,num2str(i),'FontSize',18,'Color',[1 0 0]);
+ end
+
+
+
+
 
 
 %% figure-3b-2 The frequency plot
@@ -125,7 +134,7 @@ axes3 = axes('Parent',fig3);
 hold(axes3,'on');
 plot(the_freq,freq_dB(:,object(1)),'-k')
 xlim(axes3,[15 12000]);
-ylim(axes3,[120,180]);
+ylim(axes3,[105,175]);
 xlabel({'Norm. Frequency (f/f_r_o_t)'},'FontSize',14);
 ylabel('Spectrum/20*log10(L/2e-5)' ,'FontSize',14);
 box(axes3,'on');
@@ -184,22 +193,88 @@ tsignal3.surfaces.x
 tsignal3.surfaces.z
 
 
-%% 
-R=10
-theta=linspace(0,2*pi,len);
-x=R*sin(theta)
-y=R*cos(theta)
-figure
-plot(x,y)
+%%
+%# some random data
+K = 3;
+N = len;
+data = zeros(K,N);
+% data(1,:) = 0.2*randn(1,N) + 1;
+% data(2,:) = 0.2*randn(1,N) + 2;
+% data(3,:) = 0.2*randn(1,N) + 3;
+center = [0 0];                        %# center (shift)
+
+M1=reshape(Phi(:,n_mode(1)),len,10);
+M2=reshape(Phi(:,n_mode(2)),len,10);
+M3=reshape(Phi(:,n_mode(3)),len,10);
+
+data(1,:)=normalize(M1(:,9));
+data(2,:)=normalize(M2(:,10));
+data(3,:)=normalize(M3(:,10));
+radius = [data data(:,1)];             %# added first to last to create closed loop
+min(radius(1,:))
+
+
+radius(1,:) = smooth((radius(1,:)-min(radius(1,:)))/(max(radius(1,:))-min(radius(1,:))),10);
+radius(2,:) = smooth((radius(2,:)-min(radius(2,:)))/(max(radius(2,:))-min(radius(2,:))),50);
+radius(3,:) = smooth((radius(3,:)-min(radius(3,:)))/(max(radius(3,:))-min(radius(3,:))),55);
+
+% 创建 figure
+figure1 = figure('InvertHardcopy','off','Color',[1 1 1]);
+
+% 创建 axes
+axes1 = axes('Parent',figure1);
+axis off
+hold(axes1,'on');
+
+theta = linspace(5*pi/2, pi/2, 500)';  %# 'angles
+r = max(radius(:));                    %# radius
+x1 = r*cos(theta)+center(1);
+y1 = r*sin(theta)+center(2);
+
+
+
+
+
+%# draw labels
+theta = linspace(5*pi/2, pi/2, N+1)';    %# 'angles
+theta(end) = [];
+r = max(radius(:));
+r = r + r*0.2;                           %# shift to outside a bit
+x = r*cos(theta)+center(1);
+y = r*sin(theta)+center(2);
+str = strcat(num2str((1:N)','%d'));   %# 'labels
+%text(x, y, str, 'FontWeight','Bold');
+
+%# draw the actual series
+theta = linspace(5*pi/2, pi/2, N+1);
+x = bsxfun(@times, radius, cos(theta)+center(1))';
+y = bsxfun(@times, radius, sin(theta)+center(2))';
+h = zeros(1,K);
+clr = parula(K);
+% 
 hold on
-k=1
-amp=normalize(sum(reshape(Phi(:,n_mode(k)),len,10),2));
+h(1) = plot(x(:,1), y(:,1),'DisplayName','m1:29','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[0 0 0]);
+h(2) = plot(x(:,2), y(:,2),'DisplayName','m2:12','Marker','.','LineWidth',3,...
+    'Color',[0 0.447058823529412 0.741176470588235]);
+h(3) = plot(x(:,3), y(:,3),'DisplayName','m3:11','Marker','.','LineWidth',3,...
+    'LineStyle','--',...
+    'Color',[0 1 0]);
+plot(x1, y1, 'k:');
+hold on
+axis off
+hold(axes1,'off');
+% 设置其余坐标区属性
+set(axes1,'DataAspectRatio',[1 1 1],'PlotBoxAspectRatio',...
+    [1 1 1.08929892089437]);
+% 创建 legend
+legend1 = legend(axes1,'show');
+set(legend1,...
+    'Position',[0.449620775729646 0.371518547658106 0.151785714285714 0.129761904761905],...
+    'FontSize',14,...
+    'FontName','Helvetica Neue',...
+    'EdgeColor',[1 1 1],...
+    'Color',[0.941176470588235 0.941176470588235 0.941176470588235]);
 
 
-x1=x+amp.*sin(theta);
-y1=y+amp.*cos(theta);
-plot(x1,y1)
-axis equal
 
-figure
-plot(amp)
