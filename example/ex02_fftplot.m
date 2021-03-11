@@ -11,7 +11,7 @@
 
 clc
 clear
-close all
+%close all
 %% 案例研究内容： 
 output='fft-B1结果批量输出';
 % 是否做DPLA处理
@@ -71,12 +71,11 @@ set(axes1,'XGrid','on');
 set(axes1,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
     'XTickLabel',{'1','29(1xBPF)','58(2xBPF)'});
 
-%% figure-2 Time-series plot
-% 分别包括绝对坐标系
+%%
 axes2 = axes('Parent',fig2,...
     'Position',[0.13 0.11  0.775 0.37865]);
 hold(axes2,'on');
-plot(the_freq,freq_dB(:,object(1)),'-k')
+plot(the_freq,freq_dB(:,11),'-k')
 xlim(axes2,[15 12000]);
 %ylim(axes2,[120,180]);
 xlabel({'Norm. Frequency (f/f_r_o_t)'},'FontSize',14);
@@ -86,6 +85,18 @@ set(axes2,'XGrid','on');
 set(axes2,'FontSize',14,'XGrid','on','XTick',[200 5800 11600],...
     'XTickLabel',{'1','29(1xBPF)','58(2xBPF)'});
 
+%% 提取出频响函数
+u=Data(:,object(1));
+y=Data(:,11);
+wind = hann(204800/2);
+[frf,f] = modalfrf(u',y',fs,wind,'Sensor','dis');
+plot(f,135+smooth(20*log10(abs(frf)),30))
+xlim([15 12000]);
+[fn,dr] = modalfit(frf,f,fs,1,'FitMethod','PP')
+
+
+
+
 % 创建 figure
 fig3 = figure('Color',[1 1 1]);
 %% figure-1 The frequency plot
@@ -93,7 +104,7 @@ fig3 = figure('Color',[1 1 1]);
 axes1 = axes('Parent',fig3,...
     'Position',[0.13  0.60238 0.775 0.37865]);
 hold(axes1,'on');
-plot(Data(:,object(1)),'-k')
+plot([1:204800]/204800,Data(:,object(1)),'-k')
 % xlim(axes1,[15 12000]);
 % %ylim(axes1,[120,180]);
 % xlabel({'Norm. Frequency (f/f_r_o_t)'},'FontSize',14);
@@ -108,7 +119,7 @@ plot(Data(:,object(1)),'-k')
 axes2 = axes('Parent',fig3,...
     'Position',[0.13 0.11  0.775 0.37865]);
 hold(axes2,'on');
-plot(Data(:,11),'-k')
+plot([1:204800]/204800,Data(:,11),'-k')
 % xlim(axes2,[15 12000]);
 % %ylim(axes2,[120,180]);
 % xlabel({'Norm. Frequency (f/f_r_o_t)'},'FontSize',14);
@@ -120,15 +131,10 @@ plot(Data(:,11),'-k')
 
 
 
-
-
 saveas(fig2,[save_directory,'/','pro2-frequcy',fname{i_file},'.fig'])
 saveas(fig2,[save_directory,'/','pro2-frequcy',fname{i_file},'.png'])
 
 end
-
-
-
 
 
 

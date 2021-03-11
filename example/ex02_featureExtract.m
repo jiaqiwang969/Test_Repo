@@ -49,8 +49,8 @@ leftData=[]; %leftData初始序号设为0
 Object = object(1:2);%分析的对象，可以是数组，则分析多个传感器的特征
 features=[];
 for i_file=1:length(fname)
-Data = importdata(fullfile(location,char(fname(i_file)))); %选择文件导入数据
-Data=V2Pa_Universal(Data,kulite_transform_ab);
+%%Data = importdata(fullfile(location,char(fname(i_file)))); %选择文件导入数据
+%%Data=V2Pa_Universal(Data,kulite_transform_ab);
 %数据不需要取均值! Data(:,1:end-1)=Data(:,1:end-1);%-mean(Data(:,1:end-1));
 %[rpm,tsignal,xuhao]=pltPlot_dB_universal(Data,fs,object,objectName,testTime,char(fname(i_file)),save_directory,DPLA,DPLA_Scale,'.mat');
 %[tsignal2,EIGS,S,Phi]=computeDMD(n_mode,rotorspeed,rpm,tsignal,xuhao,save_directory,char(fname(i_file)));
@@ -67,27 +67,102 @@ Data=V2Pa_Universal(Data,kulite_transform_ab);
 % 用到HMM模型，测点为：B，R1，R-6, 声学测点1个
 
 
-tic
-[features,leftData]=features_diff_extract(Data,Object,samplePoint,leftData,features);%11个时域特征  %feature=[PV,PPV,AP,RP,RMS,SF,IF,CF,CLF,SK,KU];
-disp([char(fname(i_file)),' ... OK!'])
-toc
+%% tic
+%% [features,leftData]=features_diff_extract(Data,Object,samplePoint,leftData,features);%11个时域特征  %feature=[PV,PPV,AP,RP,RMS,SF,IF,CF,CLF,SK,KU];
+%% disp([char(fname(i_file)),' ... OK!'])
+%% toc
 
 
 
 end
 
 
-save(fullfile(save_directory,'feature_600_12000.mat'),'features')
+%save(fullfile(save_directory,'feature_600_12000.mat'),'features')
 
-
+%load('/Users/wjq/Documents/Github-CI/Test_Repo/example/ex02_featureExtract/特征值结果批量输出-09-Mar-2021/ex02_featureExtract/特征值结果批量输出-11-Mar-2021/feature_600_12000.mat')
+load('feature_600_12000.mat')
 
 % 
-figure
-for kk=1:29
-    for k=1:length(features)
-        feature_1(k)=features{k}(kk,1);
-    end
-    plot(normalize(smooth(feature_1,100)))
-    hold on
+
+for ff=1:29
+figure1 = figure('InvertHardcopy','off','Color',[1 1 1]);
+axes1 = axes('Parent',figure1);
+for k=1:length(features)
+    feature_1(k)=features{k}(ff,1);
+    feature_2(k)=features{k}(ff,2);
+end   
+
+
+smooth_fea1=normalize(smooth(feature_1,100));
+smooth_fea2=normalize(smooth(feature_2,100));
+
+plot([1:length(features)]/length(features),smooth_fea1,'DisplayName','1','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[0 0 0])
+hold on
+plot([1:length(features)]/length(features),smooth_fea2,'DisplayName','2','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[1 0 0])
+hold on
+
+title(['feature',num2str(ff)])
+legend1 = legend(axes1,'show');
+set(legend1,...
+    'Position',[0.449620775729646 0.371518547658106 0.151785714285714 0.129761904761905],...
+    'FontSize',14,...
+    'FontName','Helvetica Neue',...
+    'EdgeColor',[1 1 1],...
+    'Color',[0.941176470588235 0.941176470588235 0.941176470588235]);
+
+plot([55/57 55/57],[min([smooth_fea1;smooth_fea2]), max([smooth_fea1;smooth_fea2])],'Marker','.','DisplayName','prestall')
+saveas(figure1,[save_directory,'/','feature-',num2str(ff),'.fig'])
+
+%整体相关性指标提取
+R = corrcoef(feature_1,feature_2)
+R_smooth = corrcoef(smooth_fea1,smooth_fea2)
+RR(ff)=R(1,2);
+RR_smooth(ff)=R_smooth(1,2);
+
+%失速区域相关性指标提取
+s=floor(53/57*length(features));
+R2 = corrcoef(feature_1(s:end),feature_2(s:end))
+
+R2_smooth = corrcoef(smooth_fea1(s:end),smooth_fea2(s:end))
+RR2(ff)=R2(1,2);
+RR2_smooth(ff)=R2_smooth(1,2);
 end
 
+
+
+%% 失速段相关性
+figure2 = figure('InvertHardcopy','off','Color',[1 1 1]);
+axes2 = axes('Parent',figure2);
+plot(RR2,'DisplayName','RR','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[0 0 0])
+hold on
+plot(RR2_smooth,'DisplayName','RR_smooth','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[1 0 0])
+legend2 = legend(axes2,'show');
+set(legend2,...
+    'Position',[0.449620775729646 0.371518547658106 0.151785714285714 0.129761904761905],...
+    'FontSize',14,...
+    'FontName','Helvetica Neue',...
+    'EdgeColor',[1 1 1],...
+    'Color',[0.941176470588235 0.941176470588235 0.941176470588235]);
+saveas(figure2,[save_directory,'/','feature-corrcof-stall-',num2str(ff),'.fig'])
+
+%% 整体相关性分析
+
+figure3 = figure('InvertHardcopy','off','Color',[1 1 1]);
+axes2 = axes('Parent',figure3);
+plot(RR,'DisplayName','RR','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[0 0 0])
+hold on
+plot(RR_smooth,'DisplayName','RR_smooth','MarkerSize',2,'Marker','.','LineWidth',1,...
+    'Color',[1 0 0])
+legend2 = legend(axes2,'show');
+set(legend2,...
+    'Position',[0.449620775729646 0.371518547658106 0.151785714285714 0.129761904761905],...
+    'FontSize',14,...
+    'FontName','Helvetica Neue',...
+    'EdgeColor',[1 1 1],...
+    'Color',[0.941176470588235 0.941176470588235 0.941176470588235]);
+saveas(figure3,[save_directory,'/','feature-corrcof-global-',num2str(ff),'.fig'])
