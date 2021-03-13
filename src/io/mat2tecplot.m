@@ -9,7 +9,7 @@
 
 function [s] = mat2tecplot(tdata,tecfile)
 %
-% function s =mat2tecplot(tdata,tecfile)
+% function s = mat2tecplot(tdata,tecfile)
 % 
 % Program to create tecplot binary data file (.plt).
 %

@@ -45,11 +45,10 @@ for i_file=1:length(fname)
 % [rpm,tsignal,xuhao]=pltPlot_dB_universal(Data,fs,object,objectName,testTime,char(fname(i_file)),save_directory,DPLA,DPLA_Scale,'.mat');
 % [tsignal2,EIGS,S,Phi]=computeDMD(n_mode,rotorspeed,rpm,tsignal,xuhao,save_directory,char(fname(i_file)));
 % [the_freq,freq_dB]=frequencyDomainPlot_dB(Data,fs,2.56);
-
-
-figure;
+mat2dat(zone1,'test',VARlist1)
+%figure;
 %axis equal
-hold on
+%hold on
 filed=[];
 x=[];
 y=[];
@@ -58,7 +57,7 @@ for k=1:154
 filed{k}=reshape(zone1(k).data,zone1(k).I*zone1(k).J,length(VARlist1));
 
 [theta,rho,z] = cart2pol(filed{k}(:,1),filed{k}(:,2),filed{k}(:,3));
-plot(theta,z,'.')
+%plot(theta,z,'.')
 x=[x;theta];
 y=[y;z];
 v=[v;filed{k}(:,1:18)];
@@ -90,12 +89,12 @@ end
 % plot(x(BINXY_k{k}),y(BINXY_k{k}),'.');axis equal
 % hold on
 % end
-Order=[]
+Order=[];
 for k=1:length(BINXY_k)
 Order=[Order;BINXY_k{k}];
 end
 X_i=v(Order,:);
-clearvars -except X_i
+clearvars -except X_i save_directory i_file fname location
 savename = [save_directory,'/',strrep(fname{i_file},'.dat','.mat')];
 save(savename)
 end

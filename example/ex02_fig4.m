@@ -177,7 +177,6 @@ div = 3.2*ones(1,10);
 tsignal3.surfaces.x =[x;x_middle1]; tsignal3.surfaces.y =[y;y_middle1]; tsignal3.surfaces.z =[z;z_middle1];
 tsignal3_v=[normalize(reshape(tsignal.surfaces(1).v,len,10));div];%随意取
 
-
 for k=1:n
     tsignal3.surfaces.x=[tsignal3.surfaces.x;x_middle1;x;x_middle2];
     tsignal3.surfaces.y=[tsignal3.surfaces.y;y_middle1 + (k)*space;y + (k)*space;y_middle2 + (k)*space];
