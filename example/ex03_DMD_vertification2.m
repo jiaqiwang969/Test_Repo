@@ -1,5 +1,5 @@
 %% -------   example-04：利用cfd数据进行time-delay DMD的验证   ------- %%
-%！22个叶片;-3.4000e-05s 一个间隔
+%！22个叶片;-3.4000e-05s 一个间隔;16043
 %% -------   Jiaqiwang969@gmail.com  SJTU SVN             ------- %%
 % 第一步，利用python批量提取csv
 % 第二步，导入数据
@@ -234,7 +234,6 @@ for kk=1:154
         %pause
     %end
     xuhao_1=xuhao_2+1;
-    
 end
 
 
