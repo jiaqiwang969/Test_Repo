@@ -12,6 +12,7 @@
 %11-Vr	%12-Vt	%13-Vxyz:0	%14-Vxyz:1	%15-Vxyz:2	%16-Wt	%17-Wxyz:0	
 %18-Wxyz:1	%19-Wxyz:2
 
+% 研究1：传感器布置数量对DMD效果的影响，传感器选择对称布置
 
 clc
 clear
@@ -58,6 +59,7 @@ end
 %  一定要记录220分的序列号，以便对110列的打散拼接操作
 % 注：总结后，将其转化为function，输出参数。
 
+sensor=2;
 
 examplefile='/Users/wjq/Documents/Github-CI/Test_Repo/data/B2B_65layer/B2B65layer_09016_t1.dat';
 nbins=[220,330];
@@ -72,11 +74,12 @@ for k=1:length(BINXY_k)-1
 end
 xuhao_BINXY_k=[0 xuhao_BINXY_k];
 xuhao_1=1;xuhao_2=0;
-for k=1:floor(length(fname_2)/n_round)
+for k=1:floor(length(fname_2)/n_round)*sensor
     % 开始拼接第一列,..110列
     X_delay=[];
-    for kk=1:n_round
-        %n=2;因此，两个block合并在一起，如果以后参数验证，n可以进行调整
+    for kk=1:n_round/sensor
+        %n=2;因此，两个block合并在一起，如果以后参数验证，n可以进行调整\
+        %y
         X_delay=[X_delay;VORTALL(xuhao_BINXY_k(2*kk-1)+1 : xuhao_BINXY_k(2*kk+n-1),   (k-1)*n_round+kk)];
     end
     VORTALL_delay(:,k)=X_delay;
@@ -88,7 +91,7 @@ X2 = VORTALL_delay(:,2:end);
 [U1,S1,V1] = svd(X,'econ');
 
 %%  Compute DMD (Phi are eigenvectors)
-r =5; %length(rpm)-1;  % truncate at 21 modes
+r =7; %length(rpm)-1;  % truncate at 21 modes
 U = U1(:,1:r);
 S = S1(1:r,1:r);
 V = V1(:,1:r);
@@ -172,10 +175,13 @@ hold(axes1,'off');
 
 % 还原回去？验证一下
 [Order_1,Order_ii]=sort(Order);
-%VORTALL_delay
-Phi_back=VORTALL_delay(Order_ii,:);
 
-%Phi_back=Phi(Order_ii,:);
+%% 自由切换模态和"实验采集"
+%Phi_back=VORTALL_delay(Order_ii,:);
+Phi_back=Phi(Order_ii,:);
+
+%%
+
 xuhao_1=1;xuhao_2=0;
 for k=1:154
     xuhao_2=xuhao_1+zone1(k).I*zone1(k).J-1;
@@ -184,7 +190,7 @@ for m_order=[1:r]
 end
     xuhao_1=xuhao_2+1;
 end
-VARlist2{1}=VARlist1{1};VAlist2{2}=VARlist1{2};VARlist2{3}=VARlist1{3};
+VARlist2{1}=VARlist1{1};VAlist2{2}='Y axis';VARlist2{3}=VARlist1{3};
 VARlist2{4}='m1';
 VARlist2{5}='m2';
 VARlist2{6}='m3';
@@ -200,7 +206,7 @@ VARlist2{15}='m12';
 VARlist2{16}='m13';
 VARlist2{17}='m14';
 VARlist2{18}='m15';
-mat2dat(zone1,'test5',VARlist2);
+mat2dat(zone1,'test6',VARlist2);
 
 % 验证 
 x_back=x(Order_ii);
