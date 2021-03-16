@@ -48,7 +48,7 @@ Data = importdata(fullfile(location,char(fname(i_file)))); %选择文件导入�
 Data=V2Pa_Universal(Data,kulite_transform_ab);
 %数据不需要取均值! Data(:,1:end-1)=Data(:,1:end-1);%-mean(Data(:,1:end-1));
 [rpm,tsignal,xuhao]=pltPlot_dB_universal(Data,fs,object,objectName,testTime,char(fname(i_file)),save_directory,DPLA,DPLA_Scale,'.mat');
-[tsignal2,EIGS,S,Phi]=computeDMD(n_mode,rotorspeed,rpm,tsignal,xuhao,save_directory,char(fname(i_file)));
+[tsignal2,EIGS,S,Phi,b]=computeDMD(n_mode,rotorspeed,rpm,tsignal,xuhao,save_directory,char(fname(i_file)));
 [the_freq,freq_dB]=frequencyDomainPlot_dB(Data,fs,2.56);
 
 end
@@ -91,9 +91,9 @@ saveas(fig1,[save_directory,'/','fig3-a-unitCicle','.fig'])
 
 %% figure3-b-1 DMD 相对坐标系，模态
 
-Si=diag(S);
 X1 = f(list);
-Y1 = log2(Si(list)/2e-5);
+Y1 = log2(abs(b(list))/2e-5);
+
 
 % 创建 figure
 fig2 = figure('Color',[1 1 1]);
@@ -114,7 +114,7 @@ ylabel({'Amplitude/log2'},'FontSize',14);
 % 取消以下行的注释以保留坐标区的 X 范围
  %xlim(axes1,[-1 100]);
 % 取消以下行的注释以保留坐标区的 Y 范围
-ylim(axes1,[32 44]);
+ylim(axes1,[25 44]);
 box(axes1,'on');
 hold(axes1,'off');
  for i=1:3
@@ -201,7 +201,6 @@ data = zeros(K,N);
 % data(1,:) = 0.2*randn(1,N) + 1;
 % data(2,:) = 0.2*randn(1,N) + 2;
 % data(3,:) = 0.2*randn(1,N) + 3;
-center = [0 0];                        %# center (shift)
 
 M1=reshape(Phi(:,n_mode(1)),len,10);
 M2=reshape(Phi(:,n_mode(2)),len,10);
@@ -217,61 +216,5 @@ min(radius(1,:))
 radius(1,:) = smooth((radius(1,:)-min(radius(1,:)))/(max(radius(1,:))-min(radius(1,:))),10);
 radius(2,:) = smooth((radius(2,:)-min(radius(2,:)))/(max(radius(2,:))-min(radius(2,:))),50);
 radius(3,:) = smooth((radius(3,:)-min(radius(3,:)))/(max(radius(3,:))-min(radius(3,:))),55);
-
-% 创建 figure
 figure1 = figure('InvertHardcopy','off','Color',[1 1 1]);
-
-% 创建 axes
-axes1 = axes('Parent',figure1);
-axis off
-hold(axes1,'on');
-
-theta = linspace(5*pi/2, pi/2, 500)';  %# 'angles
-r = max(radius(:));                    %# radius
-x1 = r*cos(theta)+center(1);
-y1 = r*sin(theta)+center(2);
-
-
-
-
-
-%# draw labels
-theta = linspace(5*pi/2, pi/2, N+1)';    %# 'angles
-theta(end) = [];
-r = max(radius(:));
-r = r + r*0.2;                           %# shift to outside a bit
-x = r*cos(theta)+center(1);
-y = r*sin(theta)+center(2);
-str = strcat(num2str((1:N)','%d'));   %# 'labels
-%text(x, y, str, 'FontWeight','Bold');
-
-%# draw the actual series
-theta = linspace(5*pi/2, pi/2, N+1);
-x = bsxfun(@times, radius, cos(theta)+center(1))';
-y = bsxfun(@times, radius, sin(theta)+center(2))';
-h = zeros(1,K);
-clr = parula(K);
-% 
-hold on
-h(1) = plot(x(:,1), y(:,1),'DisplayName','m1:29','MarkerSize',2,'Marker','.','LineWidth',1,...
-    'Color',[0 0 0]);
-h(2) = plot(x(:,2), y(:,2),'DisplayName','m2:1/2','Marker','.','LineWidth',3,...
-    'Color',[0 0.447058823529412 0.741176470588235]);
-h(3) = plot(x(:,3), y(:,3),'DisplayName','m3:1','Marker','.','LineWidth',3,...
-    'LineStyle','--',...
-    'Color',[0 1 0]);
-plot(x1, y1, 'k:');
-hold on
-axis off
-hold(axes1,'off');
-% 设置其余坐标区属性
-set(axes1,'DataAspectRatio',[1 1 1],'PlotBoxAspectRatio',...
-    [1 1 1.08929892089437]);
-% 创建 legend
-legend1 = legend(axes1,'show');
-set(legend1,...
-    'Position',[0.449620775729646 0.371518547658106 0.151785714285714 0.129761904761905],...
-    'FontSize',14,...
-    'FontName','Helvetica Neue',...
-    'EdgeColor',[1 1 1],...
-    'Color',[0.941176470588235 0.941176470588235 0.941176470588235]);
+flower(figure1,radius);

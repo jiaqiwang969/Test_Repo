@@ -1,0 +1,32 @@
+%
+clc
+clear
+close all
+m=5;psi_m=0;w1=30;
+t=linspace(0,1,100);
+theta=linspace(0,2*pi,1000);
+p=exp(i*w1*t).'*cos(m*theta-psi_m);
+
+% h=figure
+% for k=1:3
+%     flower1(h,real(p(k,:)))
+%     pause(0.1)
+% end
+
+polar_plot(eqn(x,7), (x,-pi, pi),aspect_ratio=1,axes=False)
+
+
+
+function figure1=flower1(h,radius)
+axes1 = axes('Parent',h);
+center = [0 0];                       
+N=size(radius,2)-1;
+r = max(radius(:));
+r = r + r*0.2;                          
+theta = linspace(5*pi/2, pi/2, N+1);
+x = bsxfun(@times, radius, cos(theta)+center(1))';
+y = bsxfun(@times, radius, sin(theta)+center(2))';
+plot(x(:,1), y(:,1),'DisplayName','m','MarkerSize',2,'Marker','.','LineWidth',1);
+set(axes1,'DataAspectRatio',[1 1 1],'PlotBoxAspectRatio',[1 1 1.08929892089437]);
+axis off
+end

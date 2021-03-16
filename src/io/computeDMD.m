@@ -4,7 +4,7 @@
 %！ 功能：   DMD 模态分解
 %% -------   Jiaqiwang969@gmail.com  SJTU SVN             ------- %%
 
-function [tsignal2,EIGS,S,Phi]=computeDMD(n_mode,rotorspeed,rpm,tsignal,xuhao,save_directory,name)
+function [tsignal2,EIGS,S,Phi,b]=computeDMD(n_mode,rotorspeed,rpm,tsignal,xuhao,save_directory,name)
 % dt=T/length(rpm);
 
 for kk=1:length(rpm)
