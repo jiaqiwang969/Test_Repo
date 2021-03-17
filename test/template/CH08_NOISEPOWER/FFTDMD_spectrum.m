@@ -28,7 +28,7 @@ grid on, hold on
 
 %%
 % better de-noising with larger kshift
-s = 200;  % number of times to shift-stack signal
+s = 500;  % number of times to shift-stack signal
 for k = 1:s
     X(k,:) = x(k:end-s+k);
 end

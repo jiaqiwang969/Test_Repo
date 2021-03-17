@@ -10,7 +10,8 @@ function [the_freq,freq_dB]=frequencyDomainPlot_dB(signal,fs,Scale_data)
         data_freq = data_freq + temp_freq;
     end
     data_freq = data_freq/N_seg;
-    freq_dB = 20*log10(data_freq/2e-5);     % 计算声压级
+    freq_dB=data_freq;
+    %freq_dB = 20*log10(data_freq/2e-5);     % 计算声压级
     the_freq = [0:data_fft/Scale_data - 1]*fs/data_fft;  %数据频域离散刻度
     freq_dB=freq_dB(1:data_fft/Scale_data,:);
     %plot(repmat(the_freq',1,size(signal,2)),freq_dB(1:data_fft/Scale_data,:)); 

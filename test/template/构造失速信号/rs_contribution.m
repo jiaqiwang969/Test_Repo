@@ -1,11 +1,71 @@
 %
 clc
 clear
-close all
-m=1;psi_m=0;w1=40;
-t=linspace(0,1,100);
-theta=linspace(0,2*pi,1000);
-%p=exp(i*w1*t).'*cos(m*theta-psi_m);
-r=cos(m*theta-psi_m)
+%close all
+% 以12000 rpm为例， 一个12000/60=200转/s， f=200 Hz
+% 采样时间为1s，采样率为204800；
+% 测点个数及位置
+s=[45];
+% 周向模态
+m0=[1];
+m1=[1];
+m=[29;29*2;29*3]; %sensor angle
+% 初始相位
+psi_m0=[0];
+psi_m1=[0];
+psi_m=[0;0;0];
+% 频率
+f0=[100];
+f1=[200];
+f=[200;200;200];
+% 时间序列
+period=1;
+Fs=204800;
+t=linspace(period/Fs,period,Fs); 
+% 空间序列
+theta=linspace(0,2*pi,1000).';
+[~,Index] = min(abs(theta-s/180*pi));
+% 幅值
+A0=0.3072;
+A1=0.2;
+A=[1;2;0.417];
+%r=exp(i*w1*t).'*cos(m*theta-psi_m); %调幅
+r_clean=zeros(length(theta),length(t));
+for k=1:length(m)
+    r_clean=r_clean+A(k)*cos(m(k)*(theta-2*pi*f(k)*t+psi_m(k)));
+end
+rs0=A0*cos(m0*(theta-2*pi*f0*t+psi_m0));
+rs1=A1*cos(m1*(theta-2*pi*f1*t+psi_m1));
 
-mmpolar(theta,r);
+%失速调幅(调制)，再加rs信号
+%r_clean=r_clean+r_clean.*rs0+0.3*r_clean.*rs1+rs0+rs1; %后面有需要再将管道的传递函数加进去
+% 一阶调幅
+r_clean=r_clean+rs0+rs1+r_clean.*rs0;
+% 二阶调幅
+r_clean=r_clean+r_clean.*rs0;
+% % 三阶调幅
+% r_clean=r_clean+r_clean.*rs0;
+
+
+r=r_clean+1*randn(size(r_clean));
+
+signal=r(Index,:);
+%r=cos(m*theta-psi_m)
+% 可视化
+% for k=1:size(r,2)
+%     mmpolar(theta,real(r(:,k)));
+%     pause(0.1)
+% end
+
+figure;
+plot(t,signal);
+%%
+figure
+xhat = fft(signal);
+N = length(t);  % number of samples
+xpower = abs(xhat(1:N/2+1))*2/N;
+freqs = Fs*(0:(N/2))/N;
+plot(freqs,xpower,'k','LineWidth',1.2)
+grid on, hold on
+xlim([15 12000]);
+
